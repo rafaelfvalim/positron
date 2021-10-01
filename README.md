@@ -1,4 +1,4 @@
-# positron
+# Positron
 Homine - Positional Flat File Generator
 
 Application to generate positional files of NFE events for Signature Software. 
