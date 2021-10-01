@@ -18,6 +18,4 @@ public class PositronApplication {
         SpringApplication.run(PositronApplication.class, args);
     }
 
-  
-
 }
