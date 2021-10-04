@@ -51,13 +51,13 @@ public class PositionalFlatFileServiceImpl implements PositionalFlatFileService 
         return inuNpgDtos;
     }
 
-    public void createFiles(List<InuNpgDto> inuNpgDtos, String destinationPath, String fileNamePrefix, String nameExtesion) {
+    public void createFiles(List<InuNpgDto> inuNpgDtos, String destinationPath, String fileNamePrefix, String nameExtesion, int sleepTimeSecs, int splitSize, String destinationBck) {
         for (InuNpgDto inuNpgDto : inuNpgDtos) {
             long registros = 0L;
             long inicial = inuNpgDto.getNumeroInicial();
             long total = inuNpgDto.getNumeroFinal();
             long bloco = inuNpgDto.getBlocoDeProcessamento();
-
+            int cont = 0;
             while (registros < total) {
                 Long registroInicial = registros;
                 Long registroFinal = registros + bloco;
@@ -66,11 +66,12 @@ public class PositionalFlatFileServiceImpl implements PositionalFlatFileService 
                 }
                 if (registroInicial == 0) {
                     registroInicial = inicial;
-                }else{
+                } else {
                     registroInicial = registroInicial + 1;
                 }
                 StringBuilder builder = new StringBuilder();
                 String filename = destinationPath + "/" + fileNamePrefix + String.format("%09d", registroFinal) + nameExtesion;
+                String filenameBck = destinationBck + "/" + fileNamePrefix + String.format("%09d", registroFinal) + nameExtesion;
                 builder.append(inuNpgDto.getCnpjEmissor());
                 builder.append("\n");
                 builder.append(inuNpgDto.getModeloNfe());
@@ -87,16 +88,40 @@ public class PositionalFlatFileServiceImpl implements PositionalFlatFileService 
                 builder.append("\n");
                 builder.append(inuNpgDto.getAno());
                 try {
-                    logger.info("Generate file: " + filename);
+                    logger.info("Gerando arquivo: " + filename);
                     FileUtils.writeStringToFile(new File(filename), builder.toString(), Charset.forName("UTF-8"));
+                    FileUtils.writeStringToFile(new File(filenameBck), builder.toString(), Charset.forName("UTF-8"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 registros = registros + bloco;
+                cont++;
+                if (cont % splitSize == 0 && registros < total) {
+                    sleep(sleepTimeSecs);
+                    clearDiretorio(destinationPath);
+                }
             }
 
 
         }
     }
 
+    private void sleep(int segundos) {
+        try {
+            logger.info("Aguardando " + segundos + " segundos");
+            Thread.sleep(segundos * 1000);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
+
+    }
+
+    private void clearDiretorio(String diretorio) {
+        logger.info("Limpadndo pasta " + diretorio);
+        try {
+            FileUtils.cleanDirectory(new File(diretorio));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

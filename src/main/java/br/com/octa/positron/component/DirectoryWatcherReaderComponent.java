@@ -37,7 +37,7 @@ public class DirectoryWatcherReaderComponent implements ApplicationListener<Cont
         WatchKey key;
         while ((key = watchService.take()) != null) {
             for (WatchEvent<?> event : key.pollEvents()) {
-                logger.info(" New file: " + event.context() + ".");
+                logger.info("Novo arquivo adicionado: " + event.context() + ".");
                 positionalFlatFileCSV.generateFile();
             }
             key.reset();

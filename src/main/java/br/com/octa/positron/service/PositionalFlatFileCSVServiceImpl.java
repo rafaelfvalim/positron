@@ -17,9 +17,12 @@ import java.util.Set;
 
 @Service
 public class PositionalFlatFileCSVServiceImpl implements PositionalFlatFileCSVService {
+    Logger logger = LoggerFactory.getLogger(PositionalFlatFileCSVServiceImpl.class);
 
     @Value("${diretorio.saida}")
     private String diretorioSaidaArquivo;
+    @Value("${diretorio.saidabck}")
+    private String diretorioSaidaArquivoBck;
     @Value("${diretorio.entrada.csv}")
     private String diretorioEntradaArquivoCSV;
     @Value("${diretorio.processado.csv}")
@@ -28,8 +31,10 @@ public class PositionalFlatFileCSVServiceImpl implements PositionalFlatFileCSVSe
     private String flaFileNamePrefix;
     @Value("${flatfile.extension}")
     private String flatFileNameExtesion;
-    Logger logger = LoggerFactory.getLogger(PositionalFlatFileCSVServiceImpl.class);
-
+    @Value("${flatfile.sleeptimesec}")
+    private int sleepSizeSecs;
+    @Value("${flatfile.splitsize}")
+    private int splitSize;
     @Autowired
     PositionalFlatFileService positionalFlatFileService;
 
@@ -47,7 +52,7 @@ public class PositionalFlatFileCSVServiceImpl implements PositionalFlatFileCSVSe
             fileDestination = fileDestination.concat(file);
             List<String> linhas = positionalFlatFileService.getCsvLines(new File(fileNameOrign));
             List<InuNpgDto> inuNpgDtos = positionalFlatFileService.fillData(linhas);
-            positionalFlatFileService.createFiles(inuNpgDtos, diretorioSaidaArquivo, flaFileNamePrefix, flatFileNameExtesion);
+            positionalFlatFileService.createFiles(inuNpgDtos, diretorioSaidaArquivo, flaFileNamePrefix, flatFileNameExtesion, sleepSizeSecs, splitSize, diretorioSaidaArquivoBck);
         }
 
         try {
@@ -69,6 +74,12 @@ public class PositionalFlatFileCSVServiceImpl implements PositionalFlatFileCSVSe
             }
             if (!Files.isDirectory(Paths.get(diretorioArquivoProcessado))) {
                 Files.createDirectories(Paths.get(diretorioArquivoProcessado));
+            }
+            if (!Files.isDirectory(Paths.get(diretorioArquivoProcessado))) {
+                Files.createDirectories(Paths.get(diretorioArquivoProcessado));
+            }
+            if (!Files.isDirectory(Paths.get(diretorioSaidaArquivoBck))) {
+                Files.createDirectories(Paths.get(diretorioSaidaArquivoBck));
             }
         } catch (IOException e) {
             e.printStackTrace();
