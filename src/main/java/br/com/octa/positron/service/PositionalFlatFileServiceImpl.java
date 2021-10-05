@@ -51,13 +51,17 @@ public class PositionalFlatFileServiceImpl implements PositionalFlatFileService 
         return inuNpgDtos;
     }
 
-    public void createFiles(List<InuNpgDto> inuNpgDtos, String destinationPath, String fileNamePrefix, String nameExtesion, int sleepTimeSecs, int splitSize, String destinationBck) {
+    public void createFiles(List<InuNpgDto> inuNpgDtos,
+                            String destinationPath,
+                            String fileNamePrefix,
+                            String nameExtesion,
+                            int sleepTimeSecs,
+                            String destinationBck) {
         for (InuNpgDto inuNpgDto : inuNpgDtos) {
             long registros = 0L;
             long inicial = inuNpgDto.getNumeroInicial();
             long total = inuNpgDto.getNumeroFinal();
             long bloco = inuNpgDto.getBlocoDeProcessamento();
-            int cont = 0;
             while (registros < total) {
                 Long registroInicial = registros;
                 Long registroFinal = registros + bloco;
@@ -95,14 +99,9 @@ public class PositionalFlatFileServiceImpl implements PositionalFlatFileService 
                     e.printStackTrace();
                 }
                 registros = registros + bloco;
-                cont++;
-                if (cont % splitSize == 0 && registros < total) {
-                    sleep(sleepTimeSecs);
-                    clearDiretorio(destinationPath);
-                }
+                sleep(sleepTimeSecs);
+                clearDiretorio(destinationPath);
             }
-
-
         }
     }
 

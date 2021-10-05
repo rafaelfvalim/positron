@@ -33,8 +33,6 @@ public class PositionalFlatFileCSVServiceImpl implements PositionalFlatFileCSVSe
     private String flatFileNameExtesion;
     @Value("${flatfile.sleeptimesec}")
     private int sleepSizeSecs;
-    @Value("${flatfile.splitsize}")
-    private int splitSize;
     @Autowired
     PositionalFlatFileService positionalFlatFileService;
 
@@ -52,7 +50,12 @@ public class PositionalFlatFileCSVServiceImpl implements PositionalFlatFileCSVSe
             fileDestination = fileDestination.concat(file);
             List<String> linhas = positionalFlatFileService.getCsvLines(new File(fileNameOrign));
             List<InuNpgDto> inuNpgDtos = positionalFlatFileService.fillData(linhas);
-            positionalFlatFileService.createFiles(inuNpgDtos, diretorioSaidaArquivo, flaFileNamePrefix, flatFileNameExtesion, sleepSizeSecs, splitSize, diretorioSaidaArquivoBck);
+            positionalFlatFileService.createFiles(inuNpgDtos,
+                                                    diretorioSaidaArquivo,
+                                                    flaFileNamePrefix,
+                                                    flatFileNameExtesion,
+                                                    sleepSizeSecs,
+                                                    diretorioSaidaArquivoBck);
         }
 
         try {

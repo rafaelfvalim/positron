@@ -8,5 +8,10 @@ import java.util.List;
 public interface PositionalFlatFileService {
     public List<String> getCsvLines(File file);
     public List<InuNpgDto> fillData(List<String> linhas);
-    public void  createFiles(List<InuNpgDto> inuNpgDtos, String destinationPath, String fileNamePrefix, String nameExtesion, int sleepTimeSecs, int splitSize, String destinationBck);
+    public void  createFiles(List<InuNpgDto> inuNpgDtos,
+                             String destinationPath,
+                             String fileNamePrefix,
+                             String nameExtesion,
+                             int sleepTimeSecs,
+                             String destinationBck);
 }
