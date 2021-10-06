@@ -100,7 +100,6 @@ public class PositionalFlatFileServiceImpl implements PositionalFlatFileService 
                 }
                 registros = registros + bloco;
                 sleep(sleepTimeSecs);
-                clearDiretorio(destinationPath);
             }
         }
     }
