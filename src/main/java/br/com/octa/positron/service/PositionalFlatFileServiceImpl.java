@@ -58,20 +58,15 @@ public class PositionalFlatFileServiceImpl implements PositionalFlatFileService 
                             int sleepTimeSecs,
                             String destinationBck) {
         for (InuNpgDto inuNpgDto : inuNpgDtos) {
-            long registros = 0L;
-            long inicial = inuNpgDto.getNumeroInicial();
+            long registros = inuNpgDto.getNumeroInicial();
             long total = inuNpgDto.getNumeroFinal();
             long bloco = inuNpgDto.getBlocoDeProcessamento();
-            while (registros < total) {
+            while (registros <= total) {
                 Long registroInicial = registros;
                 Long registroFinal = registros + bloco;
+
                 if (registroFinal > total) {
                     registroFinal = total;
-                }
-                if (registroInicial == 0) {
-                    registroInicial = inicial;
-                } else {
-                    registroInicial = registroInicial + 1;
                 }
                 StringBuilder builder = new StringBuilder();
                 String filename = destinationPath + "/" + fileNamePrefix + String.format("%09d", registroFinal) + nameExtesion;
@@ -98,7 +93,7 @@ public class PositionalFlatFileServiceImpl implements PositionalFlatFileService 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                registros = registros + bloco;
+                registros = registros + bloco + 1;
                 sleep(sleepTimeSecs);
             }
         }
