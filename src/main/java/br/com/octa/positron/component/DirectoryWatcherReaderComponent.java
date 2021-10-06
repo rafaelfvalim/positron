@@ -1,8 +1,5 @@
 package br.com.octa.positron.component;
 
-import java.io.IOException;
-import java.nio.file.*;
-
 import br.com.octa.positron.service.PositionalFlatFileCSVService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.nio.file.*;
 
 @Component
 public class DirectoryWatcherReaderComponent implements ApplicationListener<ContextRefreshedEvent> {
