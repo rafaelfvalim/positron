@@ -1,6 +1,7 @@
 package br.com.octa.positron.configurations.springfox;
 
 
+import br.com.octa.positron.gateways.http.resource.FlatFileResource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +39,6 @@ public class SpringfoxConfiguration {
     public UiConfiguration uiConfig() {
         return UiConfigurationBuilder.builder().build();
     }
-
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder().title(applicationName).version("1.0").build();
     }

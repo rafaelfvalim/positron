@@ -2,6 +2,7 @@ package br.com.octa.positron.gateways.http.resource;
 
 
 import br.com.octa.positron.model.dto.InuNpgDto;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,7 @@ public class FlatFileResource {
     private String justificativa;
     @NotNull
     private String uf;
-    @NotEmpty(message = "Informar o ano")
+    @NotNull
     private String ano;
 
     public InuNpgDto toDTO() {

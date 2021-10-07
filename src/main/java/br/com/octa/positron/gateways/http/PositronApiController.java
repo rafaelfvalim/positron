@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/positron")
-public class PositronController {
+public class PositronApiController {
     @Autowired
     PositionalFlatFileRestService positionalFlatFileRestService;
 
@@ -30,5 +30,4 @@ public class PositronController {
         positionalFlatFileRestService.generateFile(inuNpgDtos);
         return ResponseEntity.ok("");
     }
-
 }
