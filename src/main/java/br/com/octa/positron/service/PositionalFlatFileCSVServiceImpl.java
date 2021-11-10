@@ -35,6 +35,8 @@ public class PositionalFlatFileCSVServiceImpl implements PositionalFlatFileCSVSe
     private int sleepSizeSecs;
     @Autowired
     PositionalFlatFileService positionalFlatFileService;
+    @Autowired
+	private TelegramBotService telegramBotService;
 
     @Override
     public void generateFile() {
@@ -44,6 +46,8 @@ public class PositionalFlatFileCSVServiceImpl implements PositionalFlatFileCSVSe
         Set<String> filesCSV = FileParseUtils.filterByExtenesion(inputFiles, ".csv");
         String fileNameOrign = diretorioEntradaArquivoCSV + "/";
         String fileDestination = diretorioArquivoProcessado + "/";
+		telegramBotService.sendInformation("Inicio do processamento das mensagens");
+
         for (String file : filesCSV) {
             logger.info("Arquivo: " + file);
             fileNameOrign = fileNameOrign.concat(file);
@@ -65,6 +69,8 @@ public class PositionalFlatFileCSVServiceImpl implements PositionalFlatFileCSVSe
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+        telegramBotService.sendInformation("Final do processamento das mensagens");
+
     }
 
     public void checkDiretories() {

@@ -3,6 +3,7 @@ package br.com.octa.positron.gateways.http;
 import br.com.octa.positron.gateways.http.resource.FlatFileResource;
 import br.com.octa.positron.model.dto.InuNpgDto;
 import br.com.octa.positron.service.PositionalFlatFileRestService;
+import br.com.octa.positron.service.TelegramBotService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,17 @@ import java.util.List;
 public class PositronApiController {
     @Autowired
     PositionalFlatFileRestService positionalFlatFileRestService;
+    
+    @Autowired
+    TelegramBotService telegramBotService;
 
     @PostMapping("inutilizacao")
     @ApiOperation(value = "Serviço de geração de arquivos posicionais de inutilização de nota")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> geradorDeArquivos(@RequestBody @Valid final  FlatFileResource flatFileResource) {
-        List<InuNpgDto> inuNpgDtos = new ArrayList<InuNpgDto>();
+		telegramBotService.sendInformation("Recebendo solicitação via API");
+
+    	List<InuNpgDto> inuNpgDtos = new ArrayList<InuNpgDto>();
         inuNpgDtos.add(flatFileResource.toDTO());
         positionalFlatFileRestService.generateFile(inuNpgDtos);
         return ResponseEntity.ok("");

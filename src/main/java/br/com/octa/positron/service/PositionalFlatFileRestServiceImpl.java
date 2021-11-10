@@ -38,19 +38,23 @@ public class PositionalFlatFileRestServiceImpl implements PositionalFlatFileRest
     private int sleepSizeSecs;
     @Autowired
     PositionalFlatFileService positionalFlatFileService;
-
+    @Autowired
+	private TelegramBotService telegramBotService;
+    
     @Override
     @Async
     public void generateFile(List<InuNpgDto> inuNpgDtoList) {
         checkDiretories();
         String fileNameOrign = diretorioEntradaArquivoCSV + "/";
         String fileDestination = diretorioArquivoProcessado + "/";
+		telegramBotService.sendInformation("Inicio do processamento das mensagens");
         positionalFlatFileService.createFiles(inuNpgDtoList,
                 diretorioSaidaArquivo,
                 flaFileNamePrefix,
                 flatFileNameExtesion,
                 sleepSizeSecs,
                 diretorioSaidaArquivoBck);
+		telegramBotService.sendInformation("Final do processamento das mensagens");
         try {
             Thread.sleep(2 * 1000);
             Files.deleteIfExists(Paths.get(fileDestination));

@@ -1,16 +1,15 @@
 package br.com.octa.positron.gateways.http.resource;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+
 import br.com.octa.positron.model.dto.InuNpgDto;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-
-import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @AllArgsConstructor

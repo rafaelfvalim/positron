@@ -1,6 +1,8 @@
 package br.com.octa.positron.component;
 
 import br.com.octa.positron.service.PositionalFlatFileCSVService;
+import br.com.octa.positron.service.TelegramBotService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,13 @@ public class DirectoryWatcherReaderComponent implements ApplicationListener<Cont
     @Value("${diretorio.entrada.csv}")
     private String diretorioEntradaArquivoCSV;
     Logger logger = LoggerFactory.getLogger(DirectoryWatcherReaderComponent.class);
-
+    
+    @Autowired
+    TelegramBotService telegramBotService;
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         logger.info("Diretório monitorado " + diretorioEntradaArquivoCSV);
+        telegramBotService.sendInformation("Inicio do Servidor");
         try {
             execute();
         } catch (IOException | InterruptedException e) {
